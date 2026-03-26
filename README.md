@@ -169,7 +169,7 @@ python src/pipeline/smooth_live_pipeline.py \
 
 | **Component** | **Model** | **Version / Variant** | **Source / Link** |
 |---------------|-----------|-----------------------|-------------------|
-| **Object Detection** | YOLO | `yolov8n.pt` (nano) | [Ultralytics YOLOv8](https://github.com/ultralytics/ultralytics) |
+| **Object Detection** | YOLO | `yolov12n.pt` (nano) | [Ultralytics YOLOv8](https://github.com/ultralytics/ultralytics) |
 | **Pose Estimation** | ViTPose | `vitpose-base-coco-aic-mpii` | [ViTPose on HuggingFace](https://huggingface.co/usyd-community/vitpose-base-coco-aic-mpii) |
 | **Temporal (GraphSAGE)** | Spatio‑temporal GraphSAGE | Custom – 3 layers, hidden dims [128,256,128] | [GraphSAGE paper](https://arxiv.org/abs/1706.02216) |
 | **Temporal (Transformer)** | Temporal Transformer | Custom – 4 layers, 8 heads, hidden dim 128 | [Transformer paper](https://arxiv.org/abs/1706.03762) |
