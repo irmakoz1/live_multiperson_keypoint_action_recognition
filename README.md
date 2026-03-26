@@ -74,8 +74,8 @@
 Clone the repository:
 ```
 bash
-git clone https://github.com/irmakoz1/multiperson_keypoint_action_recognition.git
-cd multiperson_keypoint_action_recognition
+git clone https://github.com/irmakoz1/live_multiperson_keypoint_action_recognition.git
+cd live_multiperson_keypoint_action_recognition
 ```
 Create a virtual environment (optional) and install requirements:
 
