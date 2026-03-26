@@ -68,8 +68,8 @@
 Clone the repository:
 ```
 bash
-git clone https://github.com/yourname/action-recognition-pipeline.git
-cd action-recognition-pipeline
+git clone https://github.com/irmakoz1/multiperson_keypoint_action_recognition.git
+cd multiperson_keypoint_action_recognition
 ```
 Create a virtual environment (optional) and install requirements:
 
@@ -79,17 +79,9 @@ python -m venv venv
 source venv/bin/activate  # or venv\Scripts\activate on Windows
 pip install -r requirements.txt
 ```
-Dataset Preparation
-The project uses MPOSE2021 for training. To download and pre‑compute keypoints:
-```
-bash
-python data/mpose/generate_mpose_keypoints.py   # downloads and extracts keypoints
-python data/mpose/generate_class_info.py        # creates class_info.json
-```
-This will generate keypoints.npy and labels.npy files in data/mpose/processed/, and a class_info.json in the same folder. In this repo, the files are already generated.
 
 Training
-GraphSAGE (Unified Spatio‑Temporal)
+PyGeometric custom GraphSAGE (Unified Spatio‑Temporal with embedding)
 ```
 bash
 python src/evaluation/temporal/graphsage_with_preprocessing.py \
@@ -101,7 +93,7 @@ python src/evaluation/temporal/graphsage_with_preprocessing.py \
 ```
 
 
-Temporal Transformer (with extractor)
+PyTorch custom Temporal Transformer (with embedding)
 ```
 bash
 python src/evaluation/temporal/temporal_transformer_mpose.py \
@@ -118,27 +110,27 @@ After training, the best model will be saved as best_model.pth in the respective
 With a camera by name (Windows DirectShow)
 ```
 bash
-python src/pipeline/smooth_live_pipeline.py \
-    --video "PC-LM1E Camera" \
-    --model_path ./models/graphsage/best_model.pth \
-    --class_info data/mpose/class_info.json \
-    --temporal_model graphsage \
-    --window_size 20 \
-    --det_input_size 480 360 \
-    --process_interval 3 \
+python src/pipeline/smooth_live_pipeline.py 
+    --video "name_of_your_camera" 
+    --model_path ./models/graphsage/best_model.pth 
+    --class_info data/mpose/class_info.json 
+    --temporal_model graphsage 
+    --window_size 20 
+    --det_input_size 480 360 
+    --process_interval 3 
     --draw_skeleton --draw_boxes --draw_labels
 ```
 
 With a video file:
 ```
 bash
-python src/pipeline/smooth_live_pipeline.py \
-    --video path/to/video.mp4 \
-    --model_path ./models/transformer/best_model.pth \
-    --class_info data/mpose/class_info.json \
-    --temporal_model transformer \
-    --window_size 20 \
-    --det_input_size 480 360 \
+python src/pipeline/smooth_live_pipeline.py 
+    --video path/to/video.mp4 
+    --model_path ./models/transformer/best_model.pth 
+    --class_info data/mpose/class_info.json 
+    --temporal_model transformer 
+    --window_size 20 
+    --det_input_size 480 360 
     --process_interval 3
 ```
 
@@ -171,8 +163,8 @@ python src/pipeline/smooth_live_pipeline.py \
 |---------------|-----------|-----------------------|-------------------|
 | **Object Detection** | YOLO | `yolov12n.pt` (nano) | [Ultralytics YOLOv8](https://github.com/ultralytics/ultralytics) |
 | **Pose Estimation** | ViTPose | `vitpose-base-coco-aic-mpii` | [ViTPose on HuggingFace](https://huggingface.co/usyd-community/vitpose-base-coco-aic-mpii) |
-| **Temporal (GraphSAGE)** | Spatio‑temporal GraphSAGE | Custom – 3 layers, hidden dims [128,256,128] | [GraphSAGE paper](https://arxiv.org/abs/1706.02216) |
-| **Temporal (Transformer)** | Temporal Transformer | Custom – 4 layers, 8 heads, hidden dim 128 | [Transformer paper](https://arxiv.org/abs/1706.03762) |
+| **Temporal (GraphSAGE)** | Spatio‑temporal GraphSAGE | Custom made in pygeometric– 3 layers, hidden dims [128,256,128] | [GraphSAGE paper](https://arxiv.org/abs/1706.02216) |
+| **Temporal (Transformer)** | Temporal Transformer | Custom mace in pytorch – 4 layers, 8 heads, hidden dim 128 | [Transformer paper](https://arxiv.org/abs/1706.03762) |
 | **Feature Extractor** | MPOSEFeatureExtractor | Custom – includes angles, velocities, relative positions | – |
 | **Tracker** | SimpleMPT | Kalman filter + IOU with NMS | Custom implementation |
 
