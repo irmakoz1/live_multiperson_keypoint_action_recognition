@@ -26,4 +26,5 @@ imageio[ffmpeg]
 rarfile
 unrar==0.4
 mpose
+ultralytics
 pyav
