@@ -16,16 +16,8 @@
 
 - Rich feature extractor that computes biomechanical angles, relative positions, velocities, and confidence encoding.
 
-### Two custom temporal architectures:
-
-- **Spatio‑temporal GraphSAGE** – unified graph that processes space and time together (per joint, per frame).
-
-  <img width="3000" height="1000" alt="Azure Databricks Data Lake-2026-03-24-003809" src="https://github.com/user-attachments/assets/659ae709-1f9a-46d0-be59-dd5b28d6b2fe" />
-
-- **Temporal Transformer** – frame‑level transformer with optional raw keypoints.
-<img width="3000" height="1000" alt="GraphSAGE Action-2026-03-26-152937" src="https://github.com/user-attachments/assets/5d31c033-11e8-4ea5-b784-cddefcec7b6b" />
-
-
+- Custom temporal models for action recognition in 20 categories.
+  
 ## Folder Structure
   ```
 
@@ -77,37 +69,6 @@
 │   └── features/
 │       └── joint_features.py      #coco joint feature mapping
 ```
-
-
-## Architecture
-
-
-
-<img width="800" height="1600" alt="Untitled diagram-2026-03-25-165006" src="https://github.com/user-attachments/assets/05dac7f7-d076-4585-9f87-94b439c3358c" />
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-**Capture thread:** reads frames from camera/video and pushes them into a queue.
-
-**Process thread:** consumes frames at a reduced rate (e.g., every 3rd frame), runs YOLO on a downscaled image, updates tracker (NMS + Kalman), runs ViTPose on raw detection boxes, maintains per‑person sliding windows, and runs the temporal model when a window is full.
-
-**Display thread:** consumes frames from the same queue as fast as possible and draws the latest tracks, skeletons, and action labels.
-
 
 ## Installation
 Clone the repository:
@@ -180,9 +141,7 @@ python src/pipeline/smooth_live_pipeline.py
 ```
 
 ### Argument	Description
-
 ```
-
   --video	Camera index (e.g., 0) or camera name (e.g., "PC-LM1E Camera") or video file path.
 
   --model_path	Path to trained best_model.pth.
@@ -205,6 +164,15 @@ python src/pipeline/smooth_live_pipeline.py
 
   --output	Save output video (MP4).
 ```
+### Two custom temporal architectures:
+
+- **Spatio‑temporal GraphSAGE** – unified graph that processes space and time together (per joint, per frame).
+
+  <img width="3000" height="1000" alt="Azure Databricks Data Lake-2026-03-24-003809" src="https://github.com/user-attachments/assets/659ae709-1f9a-46d0-be59-dd5b28d6b2fe" />
+
+- **Temporal Transformer** – frame‑level transformer with optional raw keypoints.
+<img width="3000" height="1000" alt="GraphSAGE Action-2026-03-26-152937" src="https://github.com/user-attachments/assets/5d31c033-11e8-4ea5-b784-cddefcec7b6b" />
+
 
 
 ### Models: 
@@ -230,7 +198,20 @@ python src/pipeline/smooth_live_pipeline.py
 | Unified GraphSAGE (raw)        | 20          | 64         | 128        | 3          | 4         | 0.3     | 0.8237         | 0.7729       | 0.7163           | 0.7238        |
 | Temporal Transformer (extractor)| 20          | 64         | 128        | 4          | 8         | 0.3     | 0.7438         | 0.7192       | 0.6558           | 0.9680        |
 
-# Optimisation Tips:
+
+
+## Architecture
+
+<img width="480" height="1200" alt="Untitled diagram-2026-03-25-165006" src="https://github.com/user-attachments/assets/05dac7f7-d076-4585-9f87-94b439c3358c" />
+
+**Capture thread:** reads frames from camera/video and pushes them into a queue.
+
+**Process thread:** consumes frames at a reduced rate (e.g., every 3rd frame), runs YOLO on a downscaled image, updates tracker (NMS + Kalman), runs ViTPose on raw detection boxes, maintains per‑person sliding windows, and runs the temporal model when a window is full.
+
+**Display thread:** consumes frames from the same queue as fast as possible and draws the latest tracks, skeletons, and action labels.
+
+
+### Optimisation Tips:
   - Increase --process_interval (e.g., 4 or 5) to reduce processing load.
 
   - Lower --det_input_size to 320 240 for faster detection.
