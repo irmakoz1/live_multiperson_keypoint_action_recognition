@@ -170,7 +170,7 @@ python src/pipeline/smooth_live_pipeline.py
   <img width="3000" height="1000" alt="Azure Databricks Data Lake-2026-03-24-003809" src="https://github.com/user-attachments/assets/659ae709-1f9a-46d0-be59-dd5b28d6b2fe" />
 
 - **Temporal Transformer** – frame‑level transformer with optional raw keypoints.
-<img width="3000" height="1000" alt="GraphSAGE Action-2026-03-26-152937" src="https://github.com/user-attachments/assets/5d31c033-11e8-4ea5-b784-cddefcec7b6b" />
+<img width="3000" height="1000" alt="GraphSAGE Action-2026-03-26-170053" src="https://github.com/user-attachments/assets/7ed50b93-3c4a-41ce-8f7d-7c45111101d9" />
 
 
 
